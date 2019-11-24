@@ -1,0 +1,31 @@
+@startuml
+hide footbox
+
+actor client
+
+participant FIlter
+participant springSecurityFilterChain
+participant AuthenticationManager
+participant AuthenticationProvider
+participant UserDetailsService
+participant AuthenticationSuccessHandler
+participant Controller
+
+database database
+
+
+client -> FIlter:request
+FIlter -> springSecurityFilterChain:request
+
+springSecurityFilterChain -> AuthenticationManager:request
+AuthenticationManager -> AuthenticationProvider:認証処理
+AuthenticationProvider -> UserDetailsService:ユーザー情報取得
+UserDetailsService -> database:ユーザー情報取得
+database --> UserDetailsService:ユーザー情報
+UserDetailsService --> AuthenticationProvider:ユーザー情報
+AuthenticationProvider -> AuthenticationProvider:認証処理
+AuthenticationProvider --> AuthenticationManager:認証結果
+AuthenticationManager -> AuthenticationSuccessHandler:認証情報
+AuthenticationSuccessHandler -> Controller:認証成功時のパスへリダイレクト
+Controller --> client:ログイン後の画面
+@enduml

@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/root
+    driver-class-name: org.postgresql.Driver
+    username: root
+    password: root
+
+logging:
+  level:
+    root: info
+    org.springframework: debug
+
+server:
+  port: 8080
