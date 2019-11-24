@@ -6,10 +6,5 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 class SpringSecurityDemoApplicationTests {
 
-	@Test
-	void contextLoads() {
-		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		System.out.println(encoder.encode("passwd"));
-	}
 
 }
