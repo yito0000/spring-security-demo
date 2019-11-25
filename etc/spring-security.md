@@ -1,5 +1,5 @@
 ---
-marp: false
+marp: true
 ---
 
 <style>
@@ -69,7 +69,7 @@ Springベースのアプリケーションでは事実上の標準です
   * 先ほどの認証クラス(ProviderManager)はこのFilterChainProxyにあるFilterから呼び出されます
 
 ---
-## ユーザー認証(JDBC認証)(1/6)
+## ユーザー認証(JDBC認証)(1/7)
 #### 設定方法
 Java Configurationでの設定と、XML Configurationでの設定がありますが、今回はJava Configurationでの説明をします
 ```
@@ -82,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 * `@EnableWebSecurity`をクラスに付けることでSpring Securityが有効になり、`springSecurityFilterChain`が生成されます
 * FormLoginの設定のため`WebSecurityConfigurerAdapter`を拡張します
 ---
-## ユーザー認証(JDBC認証)(2/6)
+## ユーザー認証(JDBC認証)(2/7)
 ```
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -102,13 +102,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 * パスワードエンコーダークラスもここで指定します
 
 ---
-## ユーザー認証(JDBC認証)(3/6)
+## ユーザー認証(JDBC認証)(3/7)
 #### ユーザー情報の取得
 * ユーザー情報の取得は`AuthenticationProvider`から`UserDetailsService`を実装したクラスを呼び出して処理します
 * デフォルトだと実装クラス(`JdbcDaoImpl`)、取得先のテーブルが決まっています
 
 ---
-## ユーザー認証(JDBC認証)(4/6)
+## ユーザー認証(JDBC認証)(4/7)
 
 ```
 ...
@@ -130,7 +130,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ```
 
 ---
-## ユーザー認証(JDBC認証)(5/6)
+## ユーザー認証(JDBC認証)(5/7)
 * `void configure(WebSecurity web)`
   * `FilterChainProxy`生成のための設定をします
   * 静的リソースへのアクセスに認証処理をしないように設定しています
@@ -141,9 +141,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   * 脆弱性に対する攻撃の対策をここで設定することができます(今回csrfに対して対策を無効にしています)
 
 ---
-## ユーザー認証(JDBC認証)(6/6)
+## ユーザー認証(JDBC認証)(6/7)
 #### 全体の流れ
 ![全体の流れ](./sequence.png "全体の流れ")
+
+---
+## ユーザー認証(JDBC認証)(7/7)
+#### 認証情報
+* ログイン成功後、認証情報はセッションで保持されます
+  * `SecurityContext`の実装クラスのフィールド`Authentication`に存在します
+  * `SecurityContextHolder`クラスを使うと取得ができます
+* ログアウトすると破棄します
 
 ---
 ## まとめ
