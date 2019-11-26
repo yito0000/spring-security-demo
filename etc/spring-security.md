@@ -5,6 +5,7 @@ marp: true
 <style>
 section {
     justify-content: start;
+    padding: 50px
 }
 
 p {
@@ -24,6 +25,10 @@ img[alt="認証クラス"] {
 img[alt="処理フロー"] {
   position: absolute;
   height: 75%;
+}
+
+p, ul, li {
+  font-size: 28px;
 }
 
 </style>
@@ -46,27 +51,28 @@ Springベースのアプリケーションでは事実上の標準です
 
 ---
 ## Spring Securityのアーキテクチャ(1/4)
+![処理フロー](https://github.com/spring-guides/top-spring-security-architecture/raw/master/images/security-filters.png "処理フロー")
+
+---
+## Spring Securityのアーキテクチャ(2/4)
+* FilerChainProxy(Spring Security Filters)
+  * Spring Securityを使うと`FilterChainProxy`と呼ばれるFiltersが生成されます
+  * このFiltersの中にはSpring Securityによってい用意されるFilterと、必要に応じてカスタムしたFilter含めることができます
+  * 認証処理するクラス(ProviderManager)はこのFilterChainProxyにあるFilterから呼び出されます
+
+---
+## Spring Securityのアーキテクチャ(3/4)
 ![認証クラス](https://github.com/spring-guides/top-spring-security-architecture/raw/master/images/authentication.png "認証クラス")
 
 
 ---
-## Spring Securityのアーキテクチャ(2/4)
+## Spring Securityのアーキテクチャ(4/4)
 * ProviderManger
   * 認証のためのクラスを束ねるインターフェース
   * 認証方法によって実装クラスは異なります
 * AuthenticationManager
   * 認証インターフェース
   * 認証方法によって使用される数、実装クラスの種類が異なります
-
----
-## Spring Securityのアーキテクチャ(3/4)
-![処理フロー](https://github.com/spring-guides/top-spring-security-architecture/raw/master/images/security-filters.png "処理フロー")
-
----
-## Spring Securityのアーキテクチャ(4/4)
-* FilerChainProxy(Spring Security Filters)
-  * このFilter郡の中にはSpring Securityによってい用意されるFilterと、必要に応じてカスタムしたFilterを含みます
-  * 先ほどの認証クラス(ProviderManager)はこのFilterChainProxyにあるFilterから呼び出されます
 
 ---
 ## ユーザー認証(JDBC認証)(1/7)
@@ -152,6 +158,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   * `SecurityContext`の実装クラスのフィールド`Authentication`に存在します
   * `SecurityContextHolder`クラスを使うと取得ができます
 * ログアウトすると破棄します
+
+#### 認証失敗時
+* `AuthenticationFailureHandler`の実装クラスによってハンドリングされます
+* 認証失敗時にfilterが例外(`AuthenticationException`)を投げるとここに処理が遷移します
+* 認証失敗時の遷移先の画面は任意に設定が可能です
 
 ---
 ## まとめ
