@@ -38,9 +38,9 @@ p, ul, li {
 ---
 
 ## 話すこと
-* Spring Securityとは
-* Spirng Securityのアーキテクチャ
-* ユーザー認証
+- Spring Securityとは
+- Spirng Securityのアーキテクチャ
+- ユーザー認証
 
 ---
 ## Spring Securityとは
@@ -55,10 +55,10 @@ Springベースのアプリケーションでは事実上の標準です
 
 ---
 ## Spring Securityのアーキテクチャ(2/4)
-* FilerChainProxy(Spring Security Filters)
-  * Spring Securityを使うと`FilterChainProxy`と呼ばれるFiltersが生成されます
-  * このFiltersの中にはSpring Securityによってい用意されるFilterと、必要に応じてカスタムしたFilter含めることができます
-  * 認証処理するクラス(ProviderManager)はこのFilterChainProxyにあるFilterから呼び出されます
+- FilerChainProxy(Spring Security Filters)
+  - Spring Securityを使うと`FilterChainProxy`と呼ばれるFiltersが生成されます
+  - このFiltersの中にはSpring Securityによってい用意されるFilterと、必要に応じてカスタムしたFilter含めることができます
+  - 認証処理するクラス(ProviderManager)はこのFilterChainProxyにあるFilterから呼び出されます
 
 ---
 ## Spring Securityのアーキテクチャ(3/4)
@@ -67,12 +67,12 @@ Springベースのアプリケーションでは事実上の標準です
 
 ---
 ## Spring Securityのアーキテクチャ(4/4)
-* ProviderManger
-  * 認証のためのクラスを束ねるインターフェース
-  * 認証方法によって実装クラスは異なります
-* AuthenticationManager
-  * 認証インターフェース
-  * 認証方法によって使用される数、実装クラスの種類が異なります
+- ProviderManger
+  - 認証のためのクラスを束ねるインターフェース
+  - 認証方法によって実装クラスは異なります
+- AuthenticationManager
+  - 認証インターフェース
+  - 認証方法によって使用される数、実装クラスの種類が異なります
 
 ---
 ## ユーザー認証(JDBC認証)(1/7)
@@ -85,8 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ....
 
 ```
-* `@EnableWebSecurity`をクラスに付けることでSpring Securityが有効になり、`springSecurityFilterChain`が生成されます
-* FormLoginの設定のため`WebSecurityConfigurerAdapter`を拡張します
+- `@EnableWebSecurity`をクラスに付けることでSpring Securityが有効になり、`springSecurityFilterChain`が生成されます
+- FormLoginの設定のため`WebSecurityConfigurerAdapter`を拡張します
 ---
 ## ユーザー認証(JDBC認証)(2/7)
 ```
@@ -103,15 +103,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ....
 
 ```
-* `AuthenticationManagerBuilder`はAuthenticationManagerを生成します
-* メモリ内認証、LDAP認証、JDBCベースの認証のいずれかを選択できます
-* パスワードエンコーダークラスもここで指定します
+- `AuthenticationManagerBuilder`はAuthenticationManagerを生成します
+- メモリ内認証、LDAP認証、JDBCベースの認証のいずれかを選択できます
+- パスワードエンコーダークラスもここで指定します
 
 ---
 ## ユーザー認証(JDBC認証)(3/7)
 #### ユーザー情報の取得
-* ユーザー情報の取得は`AuthenticationProvider`から`UserDetailsService`を実装したクラスを呼び出して処理します
-* デフォルトだと実装クラス(`JdbcDaoImpl`)、取得先のテーブルが決まっています
+- ユーザー情報の取得は`AuthenticationProvider`から`UserDetailsService`を実装したクラスを呼び出して処理します
+- デフォルトだと実装クラス(`JdbcDaoImpl`)、取得先のテーブルが決まっています
 
 ---
 ## ユーザー認証(JDBC認証)(4/7)
@@ -137,14 +137,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 ---
 ## ユーザー認証(JDBC認証)(5/7)
-* `void configure(WebSecurity web)`
-  * `FilterChainProxy`生成のための設定をします
-  * 静的リソースへのアクセスに認証処理をしないように設定しています
-* `void configure(HttpSecurity http)`
-  * リクエストに対する設定をします
-  * `authorizeRequests().antMatchers("/**").hasAuthority("ADMIN")`で権限による認可設定をしています
-  * formLoginのパス、ログイン成功後の遷移先なども設定します
-  * 脆弱性に対する攻撃の対策をここで設定することができます(今回csrfに対して対策を無効にしています)
+- `void configure(WebSecurity web)`
+  - `FilterChainProxy`生成のための設定をします
+  - 静的リソースへのアクセスに認証処理をしないように設定しています
+- `void configure(HttpSecurity http)`
+  - リクエストに対する設定をします
+  - `authorizeRequests().antMatchers("/**").hasAuthority("ADMIN")`で権限による認可設定をしています
+  - formLoginのパス、ログイン成功後の遷移先なども設定します
+  - 脆弱性に対する攻撃の対策をここで設定することができます(今回csrfに対して対策を無効にしています)
 
 ---
 ## ユーザー認証(JDBC認証)(6/7)
@@ -154,26 +154,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ---
 ## ユーザー認証(JDBC認証)(7/7)
 #### 認証情報
-* ログイン成功後、認証情報はセッションで保持されます
-  * `SecurityContext`の実装クラスのフィールド`Authentication`に存在します
-  * `SecurityContextHolder`クラスを使うと取得ができます
-* ログアウトすると破棄します
+- ログイン成功後、認証情報はセッションで保持されます
+  - `SecurityContext`の実装クラスのフィールド`Authentication`に存在します
+  - `SecurityContextHolder`クラスを使うと取得ができます
+- ログアウトすると破棄します
 
 #### 認証失敗時
-* `AuthenticationFailureHandler`の実装クラスによってハンドリングされます
-* 認証失敗時にfilterが例外(`AuthenticationException`)を投げるとここに処理が遷移します
-* 認証失敗時の遷移先の画面は任意に設定が可能です
+- `AuthenticationFailureHandler`の実装クラスによってハンドリングされます
+- 認証失敗時にfilterが例外(`AuthenticationException`)を投げるとここに処理が遷移します
+- 認証失敗時の遷移先の画面は任意に設定が可能です
 
 ---
 ## まとめ
-* Spring Securityは認証/認可の枠組みを用意してくれます
-* 認証方法がいくつかありますが、処理全体の流れは同じです
-* デフォルトの設定には注意してください
-  * `UserDetailsService`, 認証処理, など
-* 攻撃に対する対策(クリックジャッキング、クロスサイトリクエストフォージェリなど)も用意されているので、必要に応じて利用すると良いです
-  * ※対策できること/できないことがあるので注意 
+- Spring Securityは認証/認可の枠組みを用意してくれます
+- 認証方法がいくつかありますが、処理全体の流れは同じです
+- デフォルトの設定には注意してください
+  - `UserDetailsService`, 認証処理, など
+- 攻撃に対する対策(クリックジャッキング、クロスサイトリクエストフォージェリなど)も用意されているので、必要に応じて利用すると良いです
+  - ※対策できること/できないことがあるので注意 
 
 ---
 ## 参考
-* *Spring Security Architecture* https://spring.io/guides/topicals/spring-security-architecture
-* *Spring Security Reference* https://docs.spring.io/spring-security/site/docs/current/reference/html/
+- *Spring Security Architecture* https://spring.io/guides/topicals/spring-security-architecture
+- *Spring Security Reference* https://docs.spring.io/spring-security/site/docs/current/reference/html/
